@@ -1,0 +1,24 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/properties', label: 'Properties' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' }
+];
+---
+<header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur border-b border-slate-200">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 font-semibold text-slate-900">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-cyan-600"><path d="M3 11.5L12 4l9 7.5v7a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 18.5v-7z" stroke="currentColor" stroke-width="1.5"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span class="text-xl tracking-tight">NexNest</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a href={link.href} class="text-slate-700 hover:text-slate-900 transition-colors">{link.label}</a>
+      ))}
+    </nav>
+    <a href="/contact" class="hidden md:inline-flex items-center rounded-md bg-cyan-600 px-4 py-2 text-white shadow-sm hover:bg-cyan-500">Get in touch</a>
+  </div>
+</header>
+
+

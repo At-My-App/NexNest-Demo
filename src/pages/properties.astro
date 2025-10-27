@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import { getInBudgetProperties } from '../atmyapp/properties';
+import { getClient, getPreviewClient } from '../atmyapp/client';
+
+export const prerender = false;
+
+const url = new URL(Astro.request.url);
+const params = url.searchParams;
+
+const client = getPreviewClient(Astro.request)
+
+// Server-side budget filtering via query params
+const minPriceParam = params.get('minPrice');
+const maxPriceParam = params.get('maxPrice');
+const minPrice = minPriceParam ? Number(minPriceParam) : undefined;
+const maxPrice = maxPriceParam ? Number(maxPriceParam) : undefined;
+
+const filteredProperties = await getInBudgetProperties(client, minPrice, maxPrice);
+
+---
+
+<BaseLayout title="Properties — NexNest" description="Browse properties available with NexNest.">
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Available Properties</h1>
+    <p class="mt-2 text-slate-600">Explore our latest listings. Use filters to narrow your search.</p>
+
+    <form method="get" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+      <input type="number" name="minPrice" placeholder="Min price (USD)" value={params.get('minPrice') ?? ''} class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm" />
+      <input type="number" name="maxPrice" placeholder="Max price (USD)" value={params.get('maxPrice') ?? ''} class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm" />
+
+
+      <div class="flex items-center gap-3 lg:col-span-4">
+        <button type="submit" class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Apply</button>
+        <a href="/properties" class="text-sm text-slate-600 hover:underline">Reset</a>
+      </div>
+    </form>
+
+    {filteredProperties.length === 0 ? (
+      <p class="mt-8 text-slate-600">No properties match your filters. Try adjusting them.</p>
+    ) : (
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProperties.map((p) => {
+          // Parse location to get city and state
+          const locationParts =( p.location || '').split(', ');
+          const city = locationParts[0] || p.location;
+          const state = locationParts[1] || p.location;
+
+          return (
+            <PropertyCard
+              id={p.id}
+              imageUrl={p.image}
+              title={p.name}
+              priceUsd={p.price}
+              city={city}
+              state={state}
+              bedrooms={p.bedrooms}
+              bathrooms={p.bathrooms}
+              sizeSqm={p.size}
+            />
+          );
+        })}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+
+

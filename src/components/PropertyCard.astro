@@ -1,0 +1,69 @@
+---
+// Create format utility function
+function formatUsd(amount: number): string {
+  return (amount || 0).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+}
+
+interface Props {
+  id: string;
+  imageUrl: string;
+  title: string;
+  priceUsd: number;
+  city: string;
+  state: string;
+  bedrooms: number;
+  bathrooms: number;
+  sizeSqm: number; // metric
+}
+const { id, imageUrl, title, priceUsd, city, state, bedrooms, bathrooms, sizeSqm } = Astro.props as Props;
+---
+<article class="overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-shadow">
+  <a href={`/properties/${id}`} class="block">
+    <div class="aspect-[4/3] bg-slate-100">
+      <img src={imageUrl} alt={title} class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" />
+    </div>
+  </a>
+  <div class="p-6">
+    <div class="flex items-start gap-2 mb-3">
+      <svg class="h-5 w-5 text-slate-900 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <a href={`/properties/${id}`} class="text-lg font-semibold text-slate-900 hover:underline">{title}</a>
+    </div>
+    
+    <div class="flex items-center gap-4 text-sm text-slate-600 mb-4">
+      <div class="flex items-center gap-1.5">
+        <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span>{bedrooms} Beds</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+        </svg>
+        <span>{Math.round(sizeSqm)}m²</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+        </svg>
+        <span>{Math.round(sizeSqm * 10.764)}sqft</span>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-200">
+      <a href={`/properties/${id}`} class="inline-flex items-center rounded-lg bg-black px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 transition-colors">
+        Get Started
+      </a>
+      <span class="text-lg font-bold text-slate-900">{formatUsd(priceUsd)}</span>
+    </div>
+  </div>
+</article>
+
+

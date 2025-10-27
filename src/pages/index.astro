@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import { getClient, getPreviewClient } from '../atmyapp/client';
+import { getHero } from '../atmyapp/hero';
+import { getFeaturedProperties } from '../atmyapp/properties';
+
+export const prerender = false
+
+const client =getPreviewClient(Astro.request)
+const hero = await getHero(client)
+const properties = await getFeaturedProperties(client)
+
+---
+<BaseLayout title="NexNest — Find Your Next Nest" description="Premium real estate agency with curated properties and expert guidance.">
+  <!-- Hero Section -->
+  <section class="relative -mt-16 pt-16 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Left Content -->
+        <div class="max-w-xl">
+          <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 leading-tight">
+            Find A House<br />That Suits you
+          </h1>
+          <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+            Want to find a home? We are ready to help you Find one that suits your Lifestyle and needs
+          </p>
+          <a href="/properties" class="mt-8 inline-flex items-center rounded-lg bg-black px-8 py-4 text-white font-medium hover:bg-slate-800 transition-colors">
+            Get Started
+          </a>
+
+          <!-- Stats -->
+          <div class="mt-12 grid grid-cols-3 gap-8">
+            <div>
+              <div class="text-2xl md:text-3xl font-bold text-slate-900">{hero.listedProperties}</div>
+              <div class="mt-1 text-sm text-slate-600">Listed Properties</div>
+            </div>
+            <div>
+              <div class="text-2xl md:text-3xl font-bold text-slate-900">{hero.happyCustomers}</div>
+              <div class="mt-1 text-sm text-slate-600">Happy Customers</div>
+            </div>
+            <div>
+              <div class="text-2xl md:text-3xl font-bold text-slate-900">{hero.awards}</div>
+              <div class="mt-1 text-sm text-slate-600">Awards</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Image -->
+        <div class="relative">
+          <div class="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1200&auto=format&fit=crop" alt="Modern luxury house" class="h-full w-full object-cover" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="mt-16 bg-white rounded-2xl shadow-xl p-8 md:p-10">
+        <div class="flex items-center justify-between gap-4 mb-6">
+          <h2 class="text-xl font-semibold text-slate-900">Search for available properties</h2>
+          <a href="/properties" class="hidden md:inline-flex items-center rounded-lg bg-black px-6 py-3 text-white font-medium hover:bg-slate-800 transition-colors">
+            Get Started
+          </a>
+        </div>
+        <form method="get" action="/properties" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="relative">
+            <input type="number" name="minPrice" placeholder="Min budget (USD)" class="w-full rounded-lg border-2 border-slate-200 px-4 py-4 pl-12 text-slate-900 placeholder-slate-500 focus:border-slate-900 focus:outline-none transition-colors" />
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="relative">
+            <input type="number" name="maxPrice" placeholder="Max budget (USD)" class="w-full rounded-lg border-2 border-slate-200 px-4 py-4 pl-12 text-slate-900 placeholder-slate-500 focus:border-slate-900 focus:outline-none transition-colors" />
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="relative">
+            <button type="submit" class="w-full inline-flex items-center justify-center rounded-lg bg-black px-6 py-4 text-white font-medium hover:bg-slate-800 transition-colors">Search</button>
+          </div>
+        </form>
+        <a href="/properties" class="mt-6 md:hidden inline-flex w-full items-center justify-center rounded-lg bg-black px-6 py-3 text-white font-medium hover:bg-slate-800 transition-colors">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Properties Section -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="text-sm font-medium uppercase tracking-wider text-slate-500 mb-2">POPULAR</div>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Our Popular Homes</h2>
+        </div>
+        <a href="/properties" class="hidden md:inline-flex items-center gap-2 text-slate-900 font-medium hover:gap-3 transition-all group">
+          Explore All
+          <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {properties.map((p) => (
+          <PropertyCard id={p.id} imageUrl={p.image} title={p.name} priceUsd={p.price} city={p.location} state={p.location} bedrooms={p.bedrooms} bathrooms={p.bathrooms} sizeSqm={p.size} />
+        ))}
+      </div>
+      <a href="/properties" class="mt-8 md:hidden inline-flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 px-6 py-3 text-slate-900 font-medium hover:bg-slate-900 hover:text-white transition-colors">
+        Explore All
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>

@@ -1,0 +1,87 @@
+{
+  "description": "AMA Definitions",
+  "definitions": {
+    "hero.json": {
+      "type": "jsonx",
+      "structure": {
+        "type": "object",
+        "properties": {
+          "listedProperties": {
+            "type": "number"
+          },
+          "happyCustomers": {
+            "type": "number"
+          },
+          "awards": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "awards",
+          "happyCustomers",
+          "listedProperties"
+        ]
+      }
+    },
+    "properties": {
+      "type": "collection",
+      "structure": {
+        "description": "Generated collection for properties",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Generated description for properties.name"
+          },
+          "image": {
+            "type": "string",
+            "description": "Generated description for properties.image",
+            "format": "image"
+          },
+          "price": {
+            "type": "number",
+            "description": "Generated description for properties.price"
+          },
+          "location": {
+            "type": "string",
+            "description": "Generated description for properties.location"
+          },
+          "bedrooms": {
+            "type": "number",
+            "description": "Generated description for properties.bedrooms"
+          },
+          "bathrooms": {
+            "type": "number",
+            "description": "Generated description for properties.bathrooms"
+          },
+          "size": {
+            "type": "number",
+            "description": "Generated description for properties.size"
+          },
+          "featured": {
+            "type": "boolean",
+            "description": "Generated description for properties.featured"
+          }
+        },
+        "required": [
+          "bathrooms",
+          "bedrooms",
+          "featured",
+          "image",
+          "location",
+          "name",
+          "price",
+          "size"
+        ]
+      }
+    }
+  },
+  "events": {},
+  "args": {},
+  "metadata": {
+    "generatedAt": "2025-10-17T16:55:21.590Z",
+    "totalDefinitions": 2,
+    "totalEvents": 0,
+    "version": "1.0.0"
+  }
+}

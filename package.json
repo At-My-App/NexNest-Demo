@@ -1,0 +1,20 @@
+{
+  "name": "nexnest",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@atmyapp/core": "^0.0.10",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.12.9",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@atmyapp/cli": "^0.0.6"
+  }
+}

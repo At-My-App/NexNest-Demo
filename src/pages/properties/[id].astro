@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPropertyById } from '../../atmyapp/properties';
+import { getClient, getPreviewClient } from '../../atmyapp/client';
+
+  const { id } = Astro.params as { id: string };
+  const client = getPreviewClient(Astro.request)
+const property = await getPropertyById(client, id);
+
+if (!property) {
+  throw new Error('Property not found');
+}
+
+// Helper function to format currency
+function formatUsd(amount: number): string {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+}
+
+// Parse location to get city and state (assuming format "City, State")
+const locationParts = property.location.split(', ');
+const city = locationParts[0] || property.location;
+const state = locationParts[1] || property.location;
+
+export const prerender = false; // Not needed in 'server' mode
+
+---
+
+<BaseLayout title={`${property.name} — NexNest`} description={`Details for ${property.name}`}>
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
+    <a href="/properties" class="text-sm text-slate-600 hover:underline">← Back to properties</a>
+    <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="rounded-xl overflow-hidden ring-1 ring-slate-200 bg-slate-100">
+        <img src={property.image} alt={property.name} class="w-full h-auto object-cover" />
+      </div>
+      <div>
+        <h1 class="text-2xl font-semibold text-slate-900">{property.name}</h1>
+        <p class="mt-1 text-slate-600">{city}, {state}</p>
+        <div class="mt-3 inline-flex items-center rounded-md bg-cyan-50 px-3 py-1 text-cyan-700 font-medium">{formatUsd(property.price)}</div>
+
+        <dl class="mt-6 grid grid-cols-2 gap-4">
+          <div class="rounded-md border border-slate-200 p-3">
+            <dt class="text-xs text-slate-500">Bedrooms</dt>
+            <dd class="text-sm font-medium text-slate-900">{property.bedrooms}</dd>
+          </div>
+          <div class="rounded-md border border-slate-200 p-3">
+            <dt class="text-xs text-slate-500">Bathrooms</dt>
+            <dd class="text-sm font-medium text-slate-900">{property.bathrooms}</dd>
+          </div>
+          <div class="rounded-md border border-slate-200 p-3">
+            <dt class="text-xs text-slate-500">Size</dt>
+            <dd class="text-sm font-medium text-slate-900">{Math.round(property.size)} m²</dd>
+          </div>
+          <div class="rounded-md border border-slate-200 p-3">
+            <dt class="text-xs text-slate-500">State</dt>
+            <dd class="text-sm font-medium text-slate-900">{state}</dd>
+          </div>
+        </dl>
+
+        <div class="mt-6">
+          <h2 class="text-lg font-semibold text-slate-900">Description</h2>
+          <p class="mt-2 text-slate-700">This beautiful property is located in {property.location} and offers {property.bedrooms} bedrooms and {property.bathrooms} bathrooms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+
