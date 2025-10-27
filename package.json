@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@atmyapp/core": "^0.0.10",
+    "@atmyapp/core": "^0.0.11",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.12.9",
     "tailwindcss": "^4.1.11"
